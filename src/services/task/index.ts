@@ -4,6 +4,7 @@ import type {
   GetTaskResponse,
   CreateTaskParams,
   DeleteTaskParams,
+  GetByIdTaskParams,
 } from './types'
 
 import { appStorage } from '@/services/async-storage/storage'
@@ -26,11 +27,20 @@ export const task = {
     return data
   },
 
+  async getById(params: GetByIdTaskParams) {
+    const data = (await appStorage.getItem<GetTaskResponse>('task')) || []
+
+    const findTask = data.find((task) => task.id === params.id) || null
+
+    return findTask
+  },
+
   async delete(params: DeleteTaskParams) {
     const currentTasks =
       (await appStorage.getItem<GetTaskResponse>('task')) || []
 
-    const updatedTasks = currentTasks.filter((item) => item.id !== params.id)
+    const updatedTasks =
+      currentTasks.filter((item) => item.id !== params.id) || null
 
     await appStorage.setItem('task', updatedTasks)
 

@@ -55,5 +55,5 @@ A seguir, confira a lista das principais bibliotecas e ferramentas utilizadas no
 
 Você pode entrar em contato comigo através das minhas redes sociais:
 
-- [GitHub](https://linkedin.com/in/ferpereira36)
-- [LinkedIn](https://github.com/ferpereira36)
+- [LinkedIn](https://linkedin.com/in/ferpereira36)
+- [GitHub](https://github.com/ferpereira36)

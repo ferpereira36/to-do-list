@@ -1,18 +1,17 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { useRouter } from 'expo-router'
-import { Plus, EllipsisVertical, LayoutGrid, Trash } from 'lucide-react-native'
+import { View, Text } from 'react-native'
+import { useRouter, Link } from 'expo-router'
+import { Plus, EllipsisVertical } from 'lucide-react-native'
 
 import { Button } from '@/components/ui/button'
-import { Dropdown } from '@/components/ui/dropdown-menu'
 
-import { useGetTasks } from './_hooks/use-get-tasks'
-import { useDeleteTask } from './_hooks/use-delete-task'
+import useGetTasks from './_hooks/use-get-tasks'
+// import useDeleteTask from './_hooks/use-delete-task'
 
 export default function Home() {
   const { push } = useRouter()
-  const { data: tasks, refetch } = useGetTasks()
-  const { mutate: handleDeleteTask } = useDeleteTask()
+  const { data: tasks } = useGetTasks()
+  // const { mutate: handleDeleteTask } = useDeleteTask()
 
   return (
     <View className="bg-white flex-1 px-4">
@@ -44,40 +43,17 @@ export default function Home() {
                       <Text className="text-amber-500">Pendente</Text>
                     )}
                   </View>
-                  <Dropdown.Root>
-                    <Dropdown.Trigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <EllipsisVertical color="gray" />
-                      </Button>
-                    </Dropdown.Trigger>
-
-                    <Dropdown.Content className="gap-1 -ml-12">
-                      <Dropdown.Item asChild>
-                        <View className="pr-6">
-                          <LayoutGrid color={'black'} size={20} />
-                          <Text>Detalhes</Text>
-                        </View>
-                      </Dropdown.Item>
-
-                      <Dropdown.Item asChild>
-                        <TouchableOpacity
-                          onPress={() =>
-                            handleDeleteTask(
-                              { id: item.id },
-                              {
-                                onSuccess: () => {
-                                  refetch()
-                                },
-                              },
-                            )
-                          }
-                        >
-                          <Trash color={'black'} size={20} />
-                          <Text>Excluir</Text>
-                        </TouchableOpacity>
-                      </Dropdown.Item>
-                    </Dropdown.Content>
-                  </Dropdown.Root>
+                  <Link
+                    href={{
+                      pathname: '/detalhes-tarefa/[id]',
+                      params: { id: item.id },
+                    }}
+                    asChild
+                  >
+                    <Button variant="ghost" size="icon">
+                      <EllipsisVertical color="gray" />
+                    </Button>
+                  </Link>
                 </View>
               </View>
             ))}

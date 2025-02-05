@@ -2,7 +2,7 @@ import { createQuery } from 'react-query-kit'
 
 import { task } from '@/services/task'
 
-export function useGetTasks() {
+export default function useGetTasks() {
   const query = createQuery({
     queryKey: ['get-tasks'],
     fetcher: task.get,

@@ -9,10 +9,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
-import { useCreateTask } from './_hooks/use-create-task'
-import { taskSchema, TaskData } from './_schema'
+import useCreateTask from './_hooks/use-create-task'
+import taskSchema, { type TaskData } from './_schema'
 
-export default function AddTask() {
+export default function Content() {
   const { replace, back } = useRouter()
 
   const {

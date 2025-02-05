@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const taskSchema = z.object({
+const taskSchema = z.object({
   name: z
     .string({ message: 'Insira o nome da tarefa' })
     .min(1, 'Insira o nome da tarefa'),
@@ -9,4 +9,7 @@ export const taskSchema = z.object({
     .min(1, 'Insira a descrição da tarefa'),
 })
 
-export type TaskData = z.infer<typeof taskSchema>
+type TaskData = z.infer<typeof taskSchema>
+
+export default taskSchema
+export { TaskData }

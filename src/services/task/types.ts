@@ -13,3 +13,7 @@ export type CreateTaskParams = {
 export type DeleteTaskParams = {
   id: string
 }
+
+export type GetByIdTaskParams = {
+  id: string | string[]
+}
