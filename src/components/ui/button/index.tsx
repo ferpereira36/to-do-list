@@ -11,6 +11,8 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary web:hover:opacity-90 active:opacity-90',
         primary: 'bg-purple-600 active:opacity-90',
+        completed: 'bg-green-600 active:opacity-90',
+        inProgress: 'bg-amber-500 active:opacity-90',
         destructive: 'bg-destructive web:hover:opacity-90 active:opacity-90',
         outline:
           'border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
@@ -40,6 +42,8 @@ const buttonTextVariants = cva(
       variant: {
         default: 'text-primary-foreground',
         primary: 'text-white font-semibold',
+        completed: 'text-white font-semibold',
+        inProgress: 'text-white font-semibold',
         destructive: 'text-destructive-foreground',
         outline: 'group-active:text-accent-foreground',
         secondary:

@@ -6,7 +6,7 @@ type IProps = {
   id: string | string[]
 }
 
-export function useGetTaskById(props: IProps) {
+export default function useGetTaskById(props: IProps) {
   const { id } = props
 
   const query = createQuery({

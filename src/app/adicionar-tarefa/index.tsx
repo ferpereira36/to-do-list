@@ -40,7 +40,7 @@ export default function Content() {
 
   return (
     <>
-      <View className="bg-white flex-1 px-4">
+      <View className="bg-white flex-1 p-4">
         <View className="flex-row items-center w-full">
           <Button
             variant="primary"
@@ -65,6 +65,7 @@ export default function Content() {
               name="name"
               render={({ field }) => (
                 <Input
+                  className="bg-white"
                   value={field.value}
                   onChangeText={field.onChange}
                   error={errors.name?.message}
@@ -81,6 +82,7 @@ export default function Content() {
               name="description"
               render={({ field }) => (
                 <Textarea
+                  className="bg-white"
                   value={field.value}
                   onChangeText={field.onChange}
                   error={errors.description?.message}
@@ -89,15 +91,15 @@ export default function Content() {
               )}
             />
           </View>
-
-          <Button
-            onPress={handleSubmit(onSubmit)}
-            variant="primary"
-            className="mt-6"
-          >
-            <Text className="text-white font-semibold">Criar tarefa</Text>
-          </Button>
         </View>
+
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          variant="primary"
+          className="mt-6"
+        >
+          <Text className="text-white font-semibold">Criar tarefa</Text>
+        </Button>
       </View>
     </>
   )

@@ -1,33 +1,47 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { Trash } from 'lucide-react-native'
-import * as DialogPrimitive from '@rn-primitives/dialog'
+import { View, Text, Modal } from 'react-native'
 
-export default function Dialog() {
+import { Button } from '@/components/ui/button'
+
+interface DialogProps {
+  visible: boolean
+  title: string
+  description: string
+  onCancel: () => void
+  onConfirm: () => void
+  variantConfirm: 'destructive' | 'inProgress' | 'completed'
+  textConfirm: string
+}
+
+const Dialog = ({
+  visible,
+  title,
+  description,
+  onCancel,
+  onConfirm,
+  variantConfirm,
+  textConfirm,
+}: DialogProps) => {
   return (
-    <>
-      <DialogPrimitive.Root>
-        <DialogPrimitive.Trigger className="min-w-32 bg-cyan-600">
-          <View className="flex-row items-center h-full">
-            <Trash color={'black'} size={20} />
-            <Text className="">Excluir</Text>
-          </View>
-        </DialogPrimitive.Trigger>
+    <Modal visible={visible} transparent animationType="fade">
+      <View className="flex-1 justify-center items-center bg-black/80">
+        <View className="bg-white w-80 p-4 rounded-md">
+          <Text className="text-lg font-semibold mb-2">{title}</Text>
 
-        <DialogPrimitive.Portal>
-          <DialogPrimitive.Overlay className="bg-black/10 w-full h-full">
-            <DialogPrimitive.Content>
-              <DialogPrimitive.Title>Dialog Title</DialogPrimitive.Title>
-              <DialogPrimitive.Description>
-                Dialog description.
-              </DialogPrimitive.Description>
-              <DialogPrimitive.Close>
-                <Text>Close</Text>
-              </DialogPrimitive.Close>
-            </DialogPrimitive.Content>
-          </DialogPrimitive.Overlay>
-        </DialogPrimitive.Portal>
-      </DialogPrimitive.Root>
-    </>
+          <Text className="text-gray-600 mb-4">{description}</Text>
+
+          <View className="flex-row justify-end gap-4 mt-4">
+            <Button variant="ghost" onPress={onCancel}>
+              <Text className="font-medium">Cancelar</Text>
+            </Button>
+            <Button variant={variantConfirm} onPress={onConfirm}>
+              <Text className="text-white font-medium">{textConfirm}</Text>
+            </Button>
+          </View>
+        </View>
+      </View>
+    </Modal>
   )
 }
+
+export { Dialog }
