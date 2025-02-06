@@ -11,12 +11,14 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary web:hover:opacity-90 active:opacity-90',
         primary: 'bg-purple-600 active:opacity-90',
+        completed: 'bg-green-600 active:opacity-90',
+        inProgress: 'bg-amber-500 active:opacity-90',
         destructive: 'bg-destructive web:hover:opacity-90 active:opacity-90',
         outline:
           'border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
         secondary: 'bg-secondary web:hover:opacity-80 active:opacity-80',
         ghost:
-          'web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
+          'web:hover:bg-gray-100 web:hover:text-accent-foreground active:border-[0.2px] bg-gray-100',
         link: 'web:underline-offset-4 web:hover:underline web:focus:underline',
       },
       size: {
@@ -40,6 +42,8 @@ const buttonTextVariants = cva(
       variant: {
         default: 'text-primary-foreground',
         primary: 'text-white font-semibold',
+        completed: 'text-white font-semibold',
+        inProgress: 'text-white font-semibold',
         destructive: 'text-destructive-foreground',
         outline: 'group-active:text-accent-foreground',
         secondary:
@@ -78,7 +82,7 @@ const Button = React.forwardRef<
     >
       <Pressable
         className={cn(
-          props.disabled && 'opacity-50 web:pointer-events-none',
+          props.disabled && 'opacity-40 web:pointer-events-none',
           buttonVariants({ variant, size, className }),
         )}
         ref={ref}

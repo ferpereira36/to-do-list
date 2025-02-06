@@ -1,12 +1,12 @@
 import '../../global.css'
 import 'react-native-reanimated'
 
-import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
-import { PortalHost } from '@rn-primitives/portal'
+
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { PortalHost } from '@rn-primitives/portal'
 import { Providers } from '@/providers'
 
 export { ErrorBoundary } from 'expo-router'
@@ -18,32 +18,22 @@ export const unstableSettings = {
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    //
-  })
-
   useEffect(() => {
-    if (error) throw error
-  }, [error])
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync()
-    }
-  }, [loaded])
-
-  if (!loaded) {
-    return null
-  }
+    SplashScreen.hideAsync()
+  }, [])
 
   return <RootLayoutNav />
 }
 
 function RootLayoutNav() {
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <Providers>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           <Stack.Screen name="index" />
           <Stack.Screen name="adicionar-tarefa" />
         </Stack>

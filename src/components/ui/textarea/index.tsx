@@ -3,7 +3,7 @@ import { View, Text, TextInput, type TextInputProps } from 'react-native'
 import { cn } from '@/lib/rnr/utils'
 
 interface TextareaProps extends TextInputProps {
-  error: string | undefined
+  error?: string | undefined
 }
 
 const Textarea = React.forwardRef<
@@ -27,8 +27,8 @@ const Textarea = React.forwardRef<
           ref={ref}
           data-error={!!error}
           className={cn(
-            'web:flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] web:ring-offset-background placeholder:text-muted-foreground web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
-            props.editable === false && 'opacity-50 web:cursor-not-allowed',
+            'web:flex min-h-[80px] w-full rounded-md border border-black/40 bg-white px-3 py-2 text-sm lg:text-sm native:text-lg native:leading-[1.25] web:ring-offset-background placeholder:text-muted-foreground web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
+            props.editable === false && 'web:cursor-not-allowed',
             className,
           )}
           placeholderClassName={cn(

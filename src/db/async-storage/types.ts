@@ -1,4 +1,4 @@
-import { appStorage } from './storage'
+import { appStorage } from '.'
 
 export interface StorageService {
   getItem: <T>(key: string) => Promise<T | null>

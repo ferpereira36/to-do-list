@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Keyboard,
   Platform,
 } from 'react-native'
-import { useRouter } from 'expo-router'
+import { useRouter, useLocalSearchParams } from 'expo-router'
 import { ChevronLeft } from 'lucide-react-native'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,33 +16,58 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
-import useCreateTask from './_hooks/use-create-task'
+import useUpdateTask from '../_hooks/use-update-task'
+import useGetTaskById from '../../_hooks/use-get-task-by-id'
 import taskSchema, { type TaskData } from './_schema'
 
 export default function Content() {
   const { replace, back } = useRouter()
+  const { id } = useLocalSearchParams()
+  const { data: task, isLoading } = useGetTaskById({ id })
+  const { mutate: handleUpdateTask } = useUpdateTask()
+
+  useEffect(() => {
+    if (!isLoading && !task) {
+      back()
+    }
+  }, [isLoading, task, back])
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm<TaskData>({
     resolver: zodResolver(taskSchema),
   })
 
-  const { mutate: handleCreateTask } = useCreateTask()
+  const handleDefaultValues = () => {
+    if (!task) {
+      return
+    }
+
+    const { name, description } = task
+
+    reset({ name, description })
+  }
+
+  useEffect(handleDefaultValues, [task, reset])
 
   const onSubmit: SubmitHandler<TaskData> = (data) => {
-    handleCreateTask(
-      {
-        ...data,
+    if (!task?.id) return
+
+    const updatedData = {
+      id: task.id,
+      isCompleted: task?.isCompleted,
+      isAPI: task?.isAPI,
+      ...data,
+    }
+
+    handleUpdateTask(updatedData, {
+      onSuccess: () => {
+        replace('/')
       },
-      {
-        onSuccess: () => {
-          replace('/')
-        },
-      },
-    )
+    })
   }
 
   return (
@@ -61,7 +86,7 @@ export default function Content() {
               <ChevronLeft color="white" />
             </Button>
             <Text className="text-xl font-semibold text-center flex-1">
-              Adicionar tarefa
+              Editar tarefa
             </Text>
             <View className="w-12 h-12 items-center justify-center" />
           </View>
@@ -106,7 +131,7 @@ export default function Content() {
             className="mt-8"
             disabled={isSubmitting}
           >
-            <Text className="text-white font-semibold">Criar tarefa</Text>
+            <Text className="text-white font-semibold">Salvar</Text>
           </Button>
         </View>
       </TouchableWithoutFeedback>

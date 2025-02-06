@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
 const taskSchema = z.object({
+  id: z.string(),
+  isCompleted: z.boolean(),
   name: z
     .string({ message: 'Insira o nome da tarefa' })
     .min(1, 'Insira o nome da tarefa'),
