@@ -1,6 +1,6 @@
 import { createQuery } from 'react-query-kit'
 
-import { task } from '@/services/task'
+import { task } from '@/services/task/async-storage'
 
 type IProps = {
   id: string | string[]

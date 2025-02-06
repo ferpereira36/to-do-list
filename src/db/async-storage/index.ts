@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StorageService } from './service'
+import { StorageService } from './types'
 
 const STORAGE_PREFIX = 'todolist@storage:'
 

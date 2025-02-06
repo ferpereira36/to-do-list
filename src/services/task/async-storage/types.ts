@@ -1,6 +1,7 @@
 export type GetTaskResponse = {
   id: string
   isCompleted: boolean
+  isAPI: boolean
   name: string
   description: string
 }[]
@@ -10,11 +11,11 @@ export type CreateTaskParams = {
   description: string
 }
 
-export type GetByIdTaskParams = {
+export type GetTaskByIdParams = {
   id: string | string[]
 }
 
-export type UpdateStatusTaskParams = {
+export type UpdateTaskStatusParams = {
   id: string
 }
 
@@ -23,6 +24,7 @@ export type UpdateTaskParams = {
   name: string
   description: string
   isCompleted: boolean
+  isAPI: boolean
 }
 
 export type DeleteTaskParams = {

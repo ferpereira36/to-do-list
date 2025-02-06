@@ -17,8 +17,6 @@
     "@hookform/resolvers": "^3.10.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^7.0.14",
-    "@rn-primitives/alert-dialog": "^1.1.0",
-    "@rn-primitives/dropdown-menu": "^1.1.0",
     "@rn-primitives/portal": "^1.1.0",
     "@rn-primitives/slot": "^1.1.0",
     "@rn-primitives/types": "^1.1.0",

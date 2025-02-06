@@ -4,19 +4,24 @@ import type {
   GetTaskResponse,
   CreateTaskParams,
   DeleteTaskParams,
-  GetByIdTaskParams,
+  GetTaskByIdParams,
   UpdateTaskParams,
-  UpdateStatusTaskParams,
+  UpdateTaskStatusParams,
 } from './types'
 
-import { appStorage } from '@/services/async-storage/storage'
+import { appStorage } from '@/db/async-storage'
 
 export const task = {
   async create(params: CreateTaskParams) {
     const currentTasks =
       (await appStorage.getItem<GetTaskResponse>('task')) || []
 
-    const newTask = { id: uuid.v4(), isCompleted: false, ...params }
+    const newTask = {
+      id: uuid.v4(),
+      isCompleted: false,
+      isAPI: false,
+      ...params,
+    }
     const updatedTasks = [newTask, ...currentTasks]
 
     await appStorage.setItem('task', updatedTasks)
@@ -29,7 +34,7 @@ export const task = {
     return data
   },
 
-  async getById(params: GetByIdTaskParams) {
+  async getById(params: GetTaskByIdParams) {
     const data = (await appStorage.getItem<GetTaskResponse>('task')) || []
 
     const findTask = data.find((task) => task.id === params.id) || null
@@ -37,7 +42,7 @@ export const task = {
     return findTask
   },
 
-  async updateStatusTask(params: UpdateStatusTaskParams) {
+  async updateStatusTask(params: UpdateTaskStatusParams) {
     const tasks = (await appStorage.getItem<GetTaskResponse>('task')) ?? []
 
     const updatedTask = tasks.map((task) =>
@@ -54,8 +59,8 @@ export const task = {
   async updateTask(params: UpdateTaskParams) {
     const data = (await appStorage.getItem<GetTaskResponse>('task')) ?? []
 
-    const updatedTask = data.map((item) =>
-      item.id === params.id ? { ...task, ...params } : task,
+    const updatedTask = data.map((task) =>
+      task.id === params.id ? { ...task, ...params } : task,
     )
 
     await appStorage.setItem('task', updatedTask)

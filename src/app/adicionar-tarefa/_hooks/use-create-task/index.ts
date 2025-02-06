@@ -1,6 +1,6 @@
 import { createMutation } from 'react-query-kit'
 
-import { task } from '@/services/task'
+import { task } from '@/services/task/async-storage'
 
 export default function useCreateTask() {
   const mutation = createMutation({

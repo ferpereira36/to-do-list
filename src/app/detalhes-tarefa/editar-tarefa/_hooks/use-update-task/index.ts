@@ -2,10 +2,10 @@ import { createMutation } from 'react-query-kit'
 
 import { task } from '@/services/task/async-storage'
 
-export default function useDeleteTask() {
+export default function useUpdateTask() {
   const mutation = createMutation({
-    mutationKey: ['delete-task'],
-    mutationFn: task.delete,
+    mutationKey: ['update-task'],
+    mutationFn: task.updateTask,
   })
 
   return mutation()

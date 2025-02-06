@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, ActivityIndicator } from 'react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import { ChevronLeft, Info } from 'lucide-react-native'
+import { useLocalSearchParams, useRouter, Link } from 'expo-router'
+import { ChevronLeft, Pen } from 'lucide-react-native'
 
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { BadgeText } from '@/components/ui/badge-text'
 import { BadgeStatus } from '@/components/ui/badge-status'
 import { Dialog } from '@/components/ui/dialog'
+import { Textarea } from '@/components/ui/textarea'
 
 import useGetTaskById from '../_hooks/use-get-task-by-id'
 import useDeleteTask from '../_hooks/use-delete-task'
@@ -14,7 +16,7 @@ import useUpdateStatusTask from '../_hooks/use-update-status-task'
 
 export default function Content() {
   const { id } = useLocalSearchParams()
-  const { back } = useRouter()
+  const { back, replace } = useRouter()
   const { data: task, isLoading } = useGetTaskById({ id })
   const { mutate: handleStatusTask } = useUpdateStatusTask()
   const { mutate: handleDeleteTask } = useDeleteTask()
@@ -30,7 +32,7 @@ export default function Content() {
 
   if (isLoading)
     return (
-      <View className="flex-1 h-full justify-center items-center">
+      <View className="flex-1 h-full justify-center items-center bg-white">
         <ActivityIndicator color="gray" />
       </View>
     )
@@ -51,18 +53,42 @@ export default function Content() {
           <Text className="text-xl font-semibold text-center flex-1">
             Detalhes da tarefa
           </Text>
-          <View className="w-12 h-12 items-center justify-center">
-            <Info size={28} color="gray" />
+
+          <Link
+            href={{
+              pathname: '/detalhes-tarefa/editar-tarefa/[id]',
+              params: { id: task.id },
+            }}
+            asChild
+          >
+            <Button variant="primary" size="icon" className="w-12 h-12">
+              <Pen color="white" size={20} />
+            </Button>
+          </Link>
+        </View>
+
+        <View className="gap-4 mt-8">
+          <View className="gap-1 flex-row">
+            <Badge>
+              <Text className="text-center">Nome</Text>
+            </Badge>
+            <BadgeText>{task.name}</BadgeText>
+          </View>
+          <View className="gap-1 flex-row">
+            <Badge>
+              <Text className="text-center">Status</Text>
+            </Badge>
+            <BadgeStatus isCompleted={task.isCompleted} />
+          </View>
+          <View className="gap-1">
+            <Badge>
+              <Text className="text-center">Descrição</Text>
+            </Badge>
+            <Textarea editable={false}>{task.description}</Textarea>
           </View>
         </View>
 
         <View className="gap-4 mt-8">
-          <BadgeText title="Nome" content={task.name} />
-          <BadgeText title="Descrição" content={task.description} />
-          <BadgeStatus title="Status" isCompleted={task.isCompleted} />
-        </View>
-
-        <View className="gap-4 mt-6">
           <Button
             onPress={() => setDialogStatusVisible(true)}
             variant={task.isCompleted ? 'inProgress' : 'completed'}
@@ -93,7 +119,7 @@ export default function Content() {
             { id: task.id },
             {
               onSuccess: () => {
-                back()
+                replace('/')
               },
             },
           )
@@ -112,7 +138,7 @@ export default function Content() {
             { id: task.id },
             {
               onSuccess: () => {
-                back()
+                replace('/')
               },
             },
           )

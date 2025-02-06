@@ -10,37 +10,39 @@ import {
   Platform,
   ScrollView,
 } from 'react-native'
-import { useRouter, useFocusEffect, Link } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { Plus, EllipsisVertical } from 'lucide-react-native'
 
 import { Button } from '@/components/ui/button'
 import { SearchText } from '@/components/ui/search-text'
 
-import useGetTasks from './_hooks/use-get-tasks'
 import normalize from '@/utils/normalize'
+
+import useGetTasks from './_hooks/use-get-tasks'
+import useGetTasksByAPI from './_hooks/use-get-tasks-by-api'
 
 export default function Home() {
   const { push } = useRouter()
-  const { data: tasks, isLoading, refetch } = useGetTasks()
+  const { data: tasks, isLoading } = useGetTasks()
+  const { data: tasksAPI, isLoading: isLoadingAPI } = useGetTasksByAPI()
   const [search, setSearch] = useState('')
 
-  const filteredData = tasks?.filter((item) =>
+  const mergeTasks = [...(tasks ?? []), ...(tasksAPI ?? [])]
+
+  const filteredData = mergeTasks?.filter((item) =>
     normalize(item.name).includes(normalize(search)),
   )
-
-  useFocusEffect(() => {
-    refetch()
-  })
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={{ flex: 1 }}
-      className="bg-white p-4"
+      className="flex-1 bg-white p-4"
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View className="flex-1">
-          <Text className="text-center text-xl font-semibold">To Do List</Text>
+          <Text className="text-center text-xl font-semibold">
+            Minhas tarefas
+          </Text>
           <Button
             variant="primary"
             className="mt-5 self-end flex-row items-center gap-2"
@@ -50,17 +52,19 @@ export default function Home() {
             <Text className="text-white font-semibold">Nova tarefa</Text>
           </Button>
 
-          {isLoading && (
-            <View className="justify-center items-center">
-              <ActivityIndicator color="gray" />
-            </View>
-          )}
+          {isLoading ||
+            (isLoadingAPI && (
+              <View className="flex-1 h-full justify-center items-center bg-white">
+                <ActivityIndicator color="gray" />
+              </View>
+            ))}
 
-          {!isLoading && (
+          {!isLoading && !isLoadingAPI && (
             <>
               <TextInput
-                className="h-12 mt-5 bg-white rounded-md border-black/40 border px-2"
-                placeholder="Pesquisar.."
+                className="h-12 mt-5 bg-gray-50 rounded-md border-black/40 border px-2"
+                placeholder="Pesquisar..."
+                placeholderTextColor="gray"
                 onChangeText={(text) => setSearch(text)}
               />
 
@@ -69,34 +73,39 @@ export default function Home() {
                   <Text className="text-center">Nenhuma tarefa encontrada</Text>
                 </View>
               ) : (
-                <ScrollView className="gap-4 mt-5">
-                  {filteredData?.map((item) => (
-                    <View key={item.id}>
-                      <View className="rounded-md h-24 p-3 border-black/10 border text- border-l-4 border-l-purple-600 justify-between items-center flex-row">
-                        <View className="gap-3">
-                          <Text>
-                            <SearchText text={item.name} search={search} />
-                          </Text>
-                          {item.isCompleted ? (
-                            <Text className="text-green-500">Concluído</Text>
-                          ) : (
-                            <Text className="text-amber-500">Pendente</Text>
-                          )}
-                        </View>
-                        <Link
-                          href={{
-                            pathname: '/detalhes-tarefa/[id]',
-                            params: { id: item.id },
-                          }}
-                          asChild
-                        >
-                          <Button variant="ghost" size="icon">
+                <ScrollView className="mt-6">
+                  <View className="gap-4">
+                    {filteredData?.map((item) => (
+                      <View key={item.id}>
+                        <View className="rounded-md h-24 p-3 border-black/20 border text- border-l-4 border-l-purple-600 justify-between items-center flex-row">
+                          <View className="gap-3 flex-1">
+                            <Text className="line-clamp-1">
+                              <SearchText text={item.name} search={search} />
+                            </Text>
+                            {item.isCompleted ? (
+                              <Text className="text-green-500">Concluído</Text>
+                            ) : (
+                              <Text className="text-amber-500">Pendente</Text>
+                            )}
+                          </View>
+
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={item.isAPI}
+                            onPress={() => {
+                              push({
+                                pathname: '/detalhes-tarefa/[id]',
+                                params: { id: item.id },
+                              })
+                            }}
+                          >
                             <EllipsisVertical color="gray" />
                           </Button>
-                        </Link>
+                        </View>
                       </View>
-                    </View>
-                  ))}
+                    ))}
+                  </View>
                 </ScrollView>
               )}
             </>
