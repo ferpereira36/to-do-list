@@ -34,46 +34,50 @@ export default function Home() {
   )
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      className="flex-1 bg-white p-4"
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View className="flex-1">
-          <Text className="text-center text-xl font-semibold">
-            Minhas tarefas
-          </Text>
-          <Button
-            variant="primary"
-            className="mt-5 self-end flex-row items-center gap-2"
-            onPress={() => push('/adicionar-tarefa')}
+    <View className="flex-1 bg-white p-4">
+      <Text className="text-center text-xl font-semibold">Minhas tarefas</Text>
+      <Button
+        variant="primary"
+        className="mt-5 self-end flex-row items-center gap-2"
+        onPress={() => push('/adicionar-tarefa')}
+      >
+        <Plus color="white" size={20} />
+        <Text className="text-white font-semibold">Nova tarefa</Text>
+      </Button>
+
+      {isLoading ||
+        (isLoadingAPI && (
+          <View className="flex-1 h-full justify-center items-center bg-white">
+            <ActivityIndicator color="gray" />
+          </View>
+        ))}
+
+      {!isLoading && !isLoadingAPI && (
+        <>
+          <TextInput
+            className="h-12 mt-5 bg-gray-50 rounded-md border-black/40 border px-2"
+            placeholder="Pesquisar..."
+            placeholderTextColor="gray"
+            onChangeText={(text) => setSearch(text)}
+          />
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            className="flex-1"
           >
-            <Plus color="white" size={20} />
-            <Text className="text-white font-semibold">Nova tarefa</Text>
-          </Button>
-
-          {isLoading ||
-            (isLoadingAPI && (
-              <View className="flex-1 h-full justify-center items-center bg-white">
-                <ActivityIndicator color="gray" />
-              </View>
-            ))}
-
-          {!isLoading && !isLoadingAPI && (
-            <>
-              <TextInput
-                className="h-12 mt-5 bg-gray-50 rounded-md border-black/40 border px-2"
-                placeholder="Pesquisar..."
-                placeholderTextColor="gray"
-                onChangeText={(text) => setSearch(text)}
-              />
-
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
               {filteredData?.length === 0 ? (
                 <View className="mt-8">
                   <Text className="text-center">Nenhuma tarefa encontrada</Text>
                 </View>
               ) : (
-                <ScrollView className="mt-6">
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  className="mt-6"
+                >
                   <View className="gap-4">
                     {filteredData?.map((item) => (
                       <View key={item.id}>
@@ -108,10 +112,10 @@ export default function Home() {
                   </View>
                 </ScrollView>
               )}
-            </>
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        </>
+      )}
+    </View>
   )
 }

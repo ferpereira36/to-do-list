@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { PortalHost } from '@rn-primitives/portal'
 import { Providers } from '@/providers'
+import { StatusBar } from 'react-native'
 
 export { ErrorBoundary } from 'expo-router'
 
@@ -29,6 +30,7 @@ function RootLayoutNav() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <Providers>
+        <StatusBar barStyle="dark-content" />
         <Stack
           screenOptions={{
             headerShown: false,
