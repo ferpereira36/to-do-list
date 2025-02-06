@@ -2,6 +2,16 @@
 
 No presente projeto, desenvolvi um aplicativo de **_To-Do List_** utilizando React Native. Este projeto foi criado como parte de um teste técnico para uma vaga de Desenvolvedor Júnior, com o intuito de demonstrar minhas habilidades em desenvolvimento mobile, especialmente com React Native.
 
+## 📌 Sumário
+
+Para facilitar a navegação, siga a lista abaixo e clique nos tópicos para ir diretamente à seção desejada:
+
+- [📖 Sobre](#-sobre)
+- [🎯 Objetivo](#-objetivo)
+- [🚀 Instruções para iniciar o projeto](#-instruções-para-iniciar-o-projeto)
+- [📚 Bibliotecas](#-bibliotecas)
+- [💬 Saiba Mais](#-saiba-mais)
+
 ## 📖 Sobre 
 
 Este projeto consiste em um aplicativo simples de lista de tarefas (To-Do List), onde o usuário pode adicionar, editar, marcar como concluída e excluir tarefas. O aplicativo foi desenvolvido com foco em boas práticas de programação, componentização, e uso de hooks para gerenciamento de estado.
